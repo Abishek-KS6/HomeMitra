@@ -2,20 +2,35 @@
 
 A MERN stack platform connecting customers with house work service providers including plumbers, electricians, security guards, maids, AC repair agents, and gardeners.
 
+## Project Structure
+
+```
+HomeMitra/
+├── client/          # React frontend
+├── server/          # Node.js backend
+└── package.json     # Root package.json for scripts
+```
+
 ## Features
 
+### Client Features
 - User authentication (Customer/Service Provider)
 - Service browsing by category
 - Service booking system
 - User dashboard with booking history
 - Responsive design with Unsplash images
-- MongoDB integration ready
+
+### Admin Features
+- Admin dashboard with stats
+- Booking management (pending → confirmed → in-progress → completed)
+- Service management (CRUD operations)
+- Provider management (add/verify service members)
 
 ## Tech Stack
 
 - **Frontend**: React.js, React Router, Axios
 - **Backend**: Node.js, Express.js
-- **Database**: MongoDB (Atlas ready)
+- **Database**: MongoDB Atlas
 - **Authentication**: JWT
 
 ## Setup Instructions
@@ -23,48 +38,57 @@ A MERN stack platform connecting customers with house work service providers inc
 ### 1. Install Dependencies
 
 ```bash
-# Install backend dependencies
+# Install root dependencies
 npm install
 
-# Install frontend dependencies
-cd client
-npm install
-cd ..
+# Install all dependencies (client + server)
+npm run install-all
 ```
 
 ### 2. Environment Setup
 
-Update the `.env` file with your MongoDB Atlas connection string:
+Update `server/.env` with your MongoDB Atlas connection:
 
 ```env
-MONGO_URI=mongodb+srv://your-username:your-password@cluster0.mongodb.net/homemitra?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://agentabi07_db_user:Jai29Abi@cluster0.q6djm88.mongodb.net/homemitra?retryWrites=true&w=majority
 JWT_SECRET=your-jwt-secret-key-here
 ```
 
-### 3. Seed Initial Data
+### 3. Create Admin User
 
 ```bash
-node seedServices.js
+npm run create-admin
 ```
 
-### 4. Run the Application
+**Admin Credentials:**
+- Email: admin@homemitra.com
+- Password: admin123
+
+### 4. Seed Initial Data
 
 ```bash
-# Development mode (runs both frontend and backend)
+npm run seed
+```
+
+### 5. Run the Application
+
+```bash
+# Development mode (runs both client and server)
 npm run dev
 
 # Or run separately:
-# Backend only
+# Server only
 npm run server
 
-# Frontend only (in another terminal)
+# Client only
 npm run client
 ```
 
-### 5. Access the Application
+### 6. Access the Application
 
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:5000
+- **Client**: http://localhost:3000
+- **Admin Panel**: http://localhost:3000/admin
+- **Server API**: http://localhost:5000
 
 ## Available Services
 
@@ -85,33 +109,27 @@ npm run client
 ### Services
 - GET `/api/services` - Get all services
 - GET `/api/services?category=plumber` - Get services by category
-- GET `/api/services/:id` - Get service by ID
 
 ### Bookings
 - POST `/api/bookings` - Create booking
 - GET `/api/bookings/my` - Get user bookings
-- PATCH `/api/bookings/:id/status` - Update booking status
 
-### Providers
-- GET `/api/providers` - Get all providers
-- POST `/api/providers` - Create provider profile
+### Admin Routes
+- GET `/api/admin/stats` - Dashboard stats
+- GET `/api/admin/bookings` - All bookings
+- PATCH `/api/admin/bookings/:id/status` - Update booking status
+- POST `/api/admin/providers` - Add service provider
 
 ## MongoDB Atlas Setup
 
 1. Create account at https://cloud.mongodb.com
 2. Create a new cluster
-3. Get connection string
-4. Update MONGO_URI in .env file
-5. Whitelist your IP address
+3. Whitelist your IP address (0.0.0.0/0 for development)
+4. Update connection string in `server/.env`
 
-## Deployment
+## Admin Panel Features
 
-The app is configured for Heroku deployment with build scripts included in package.json.
-
-## Contributing
-
-1. Fork the repository
-2. Create feature branch
-3. Commit changes
-4. Push to branch
-5. Create Pull Request"# HomeMitra" 
+- **Dashboard**: Overview stats and quick actions
+- **Booking Management**: Update status, view customer details
+- **Service Management**: Add/edit/delete services
+- **Provider Management**: Add new service members, verify accounts
