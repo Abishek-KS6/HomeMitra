@@ -18,13 +18,10 @@ app.use('/api/bookings', require('./routes/bookings'));
 app.use('/api/providers', require('./routes/providers'));
 app.use('/api/admin', require('./routes/admin'));
 
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client/build')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
+// Health check route
+app.get('/', (req, res) => {
+  res.json({ message: 'HomeMitra Backend API is running!' });
+});
 
 const PORT = process.env.PORT || 5000;
 
