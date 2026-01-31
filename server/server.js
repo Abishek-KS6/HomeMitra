@@ -130,6 +130,37 @@ app.get('/api/seed', async (req, res) => {
   }
 });
 
+// Temporary admin creation route - REMOVE AFTER USE
+app.get('/api/create-admin', async (req, res) => {
+  try {
+    const User = require('./models/User');
+    const bcrypt = require('bcryptjs');
+    
+    // Check if admin already exists
+    const existingAdmin = await User.findOne({ email: 'admin@homemitra.com' });
+    if (existingAdmin) {
+      return res.json({ message: 'Admin user already exists!', email: 'admin@homemitra.com', password: 'admin123' });
+    }
+
+    // Create admin user
+    const hashedPassword = await bcrypt.hash('admin123', 10);
+    const admin = new User({
+      name: 'Admin',
+      email: 'admin@homemitra.com',
+      password: hashedPassword,
+      phone: '9999999999',
+      role: 'admin',
+      isVerified: true
+    });
+
+    await admin.save();
+    res.json({ message: 'Admin user created successfully!', email: 'admin@homemitra.com', password: 'admin123' });
+  } catch (error) {
+    console.error('Admin creation error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Health check route
 app.get('/', (req, res) => {
   res.json({ message: 'HomeMitra Backend API is running!' });
