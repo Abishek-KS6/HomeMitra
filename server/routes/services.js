@@ -7,11 +7,14 @@ const router = express.Router();
 // Get all services
 router.get('/', async (req, res) => {
   try {
+    console.log('Fetching services with query:', req.query);
     const { category } = req.query;
     const filter = category ? { category, isActive: true } : { isActive: true };
     const services = await Service.find(filter);
+    console.log('Found services:', services.length);
     res.json(services);
   } catch (error) {
+    console.error('Error in services route:', error);
     res.status(500).json({ message: error.message });
   }
 });
