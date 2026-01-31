@@ -7,13 +7,13 @@ const Services = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchServices();
-  }, [category, fetchServices]);
-
+  // ✅ MOVE THIS ABOVE useEffect
   const fetchServices = useCallback(async () => {
     try {
-      const url = category ? `/api/services?category=${category}` : '/api/services';
+      const url = category
+        ? `/api/services?category=${category}`
+        : '/api/services';
+
       const response = await axios.get(url);
       setServices(response.data);
     } catch (error) {
@@ -22,6 +22,10 @@ const Services = () => {
       setLoading(false);
     }
   }, [category]);
+
+  useEffect(() => {
+    fetchServices();
+  }, [category, fetchServices]);
 
   const categoryNames = {
     plumber: 'Plumbing Services',
@@ -46,7 +50,7 @@ const Services = () => {
         <h1 style={{ textAlign: 'center', marginBottom: '3rem', color: '#2c3e50' }}>
           {category ? categoryNames[category] : 'All Services'}
         </h1>
-        
+
         {services.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '2rem' }}>
             <h3>No services available at the moment</h3>
@@ -66,8 +70,8 @@ const Services = () => {
                       Duration: {service.duration}
                     </span>
                   </div>
-                  <Link 
-                    to={`/book/${service._id}`} 
+                  <Link
+                    to={`/book/${service._id}`}
                     className="btn btn-success"
                   >
                     Book Now
