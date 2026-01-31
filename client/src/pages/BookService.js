@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
@@ -26,9 +26,9 @@ const BookService = () => {
       return;
     }
     fetchServiceAndProviders();
-  }, [serviceId, isAuthenticated, navigate]);
+  }, [serviceId, isAuthenticated, navigate, fetchServiceAndProviders]);
 
-  const fetchServiceAndProviders = async () => {
+  const fetchServiceAndProviders = useCallback(async () => {
     try {
       const [serviceRes, providersRes] = await Promise.all([
         axios.get(`/api/services/${serviceId}`),
@@ -42,7 +42,7 @@ const BookService = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [serviceId]);
 
   const handleChange = (e) => {
     setFormData({

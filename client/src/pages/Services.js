@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -9,9 +9,9 @@ const Services = () => {
 
   useEffect(() => {
     fetchServices();
-  }, [category]);
+  }, [category, fetchServices]);
 
-  const fetchServices = async () => {
+  const fetchServices = useCallback(async () => {
     try {
       const url = category ? `/api/services?category=${category}` : '/api/services';
       const response = await axios.get(url);
@@ -21,7 +21,7 @@ const Services = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [category]);
 
   const categoryNames = {
     plumber: 'Plumbing Services',
